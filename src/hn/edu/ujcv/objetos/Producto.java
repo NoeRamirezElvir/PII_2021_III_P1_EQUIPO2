@@ -22,61 +22,59 @@ public class Producto {
     public String getCodigo() {
         return codigo;
     }
-    public void setCodigo(String codigo) {
+    public void   setCodigo(String codigo) {
         this.codigo = codigo;
     }
     public String getNombre() {
         return nombre;
     }
-    public void setNombre(String nombre) {
+    public void   setNombre(String nombre) {
         this.nombre = nombre;
     }
     public double getPrecio() {
         return precio;
     }
-    public void setPrecio(double precio) {
+    public void   setPrecio(double precio) {
         this.precio = precio;
     }
-    public int getStock() {
+    public int    getStock() {
         return stock;
     }
-    public void setStock(int stock) {
+    public void   setStock(int stock) {
         this.stock = stock;
     }
 
     public void agregarProducto(ArrayList<Producto> listaProductos){
+        Scanner  teclado  = new Scanner(System.in).useDelimiter("\n");
         Producto producto = new Producto();
-        Scanner teclado = new Scanner(System.in).useDelimiter("\n");
-        String  codigo,nombre;
-        double  precio;
-        int     stock,contador;
+        String   codigo;
         do{
-            System.out.print("Ingrese el codigo del producto: ");
+            System.out.print("Ingrese el Codigo del Producto: ");
             codigo = teclado.next();
-            contador = validarCodigo(listaProductos, codigo);
-            //System.out.println(contador);
-        }while(contador > 0);
+
+            if (validarCodigo(listaProductos, codigo))
+                System.out.println("Codigo de Producto ya Existe!");
+
+        }while(validarCodigo(listaProductos, codigo));
         producto.setCodigo(codigo);
-        System.out.print("Ingrese el nombre del producto: ");
-        nombre = teclado.next();
-        producto.setNombre(nombre);
+        System.out.print("Ingrese el Nombre del Producto: ");
+        producto.setNombre(teclado.next());
         System.out.print("Ingrese el precio del producto: ");
-        precio = teclado.nextDouble();
-        producto.setPrecio(precio);
+        producto.setPrecio(teclado.nextDouble());
         System.out.print("Ingrese el stock del producto: ");
-        stock = teclado.nextInt();
-        producto.setStock(stock);
+        producto.setStock(teclado.nextInt());
         listaProductos.add(producto);
+        System.out.println("--Producto Agregado--");
     }
 
-    public int validarCodigo(ArrayList<Producto> listaProductos, String codigo){
-        int contador = 0;
-        for (Producto listaProducto : listaProductos) {
-            if (codigo.equals(listaProducto.getCodigo())) {
-                contador++;
+    public boolean validarCodigo(ArrayList<Producto> listaProductos, String codigo){
+        boolean condicion = false;
+        for (Producto item : listaProductos) {
+            if (codigo.equals(item.getCodigo())) {
+                condicion=true;
             }
         }
-        return contador;
+        return condicion;
     }
 
     public void visualizarProductos(ArrayList<Producto> listaProductos){

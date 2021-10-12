@@ -18,28 +18,28 @@ public class Cliente {
         this.categoria    = pCategoria;
     }
 
-    public long getIdentidad() {
+    public long   getIdentidad() {
         return identidad;
     }
-    public void setIdentidad(long identidad) {
+    public void   setIdentidad(long identidad) {
         this.identidad = identidad;
     }
     public String getNombre() {
         return nombre;
     }
-    public void setNombre(String nombre) {
+    public void   setNombre(String nombre) {
         this.nombre = nombre;
     }
     public String getFechaIngreso() {
         return fechaIngreso;
     }
-    public void setFechaIngreso(String fechaIngreso) {
+    public void   setFechaIngreso(String fechaIngreso) {
         this.fechaIngreso = fechaIngreso;
     }
     public String getCategoria() {
         return categoria;
     }
-    public void setCategoria(String categoria) {
+    public void   setCategoria(String categoria) {
         this.categoria = categoria;
     }
 
@@ -47,34 +47,34 @@ public class Cliente {
     public void agregarCliente(ArrayList<Cliente> listaClientes){
         Scanner teclado = new Scanner(System.in).useDelimiter("\n");
         Cliente cliente = new Cliente();
-        String nombre,fecha,categoria;
-        int contador;
         long identidad;
+
         do{
-            System.out.print("Ingrese el numero de identidad del cliente: ");
+            System.out.print("Ingrese el numero de Identidad del Cliente: ");
             identidad = teclado.nextLong();
-            contador = validarIdentidad(listaClientes,identidad);
-        }while(contador > 0);
+            if (validarIdentidad(listaClientes,identidad))
+                System.out.println("No. Identidad Invalido, ya registrado!");
+        }while( validarIdentidad(listaClientes,identidad));
+
         cliente.setIdentidad(identidad);
-        System.out.print("Ingrese el nombre del cliente: ");
-        nombre = teclado.next();
-        cliente.setNombre(nombre);
-        System.out.print("Escriba la fecha de ingreso (dd/mm/yyyy): ");
-        fecha = teclado.next();
-        cliente.setFechaIngreso(fecha);
-        System.out.print("Ingrese la categoria del cliente: ");
-        categoria = teclado.next();
-        cliente.setCategoria(categoria);
+        System.out.print("Ingrese el Nombre del Cliente: ");
+        cliente.setNombre( teclado.next());
+        System.out.print("Escriba la Fecha de Ingreso (dd/mm/yyyy): ");
+        cliente.setFechaIngreso(teclado.next());
+        System.out.print("Ingrese la Categoria del Cliente: ");
+        cliente.setCategoria(teclado.next());
         listaClientes.add(cliente);
+        System.out.println("--Cliente Agregado--");
     }
-    public int validarIdentidad(ArrayList<Cliente> listaClientes,long identidad){
-        int contador = 0;
-        for (Cliente cliente: listaClientes) {
-            if(identidad==cliente.getIdentidad()){
-                contador++;
+
+    public boolean validarIdentidad(ArrayList<Cliente> listaClientes,long identidad){
+        boolean condicion = false;
+        for (Cliente item: listaClientes) {
+            if(identidad==item.getIdentidad()){
+                condicion=true;
             }
         }
-        return contador;
+        return condicion;
     }
     public void visualizarClientes(ArrayList<Cliente> listaClientes){
         for (Cliente clientes: listaClientes) {
@@ -85,21 +85,23 @@ public class Cliente {
         }
     }
 
-    public Cliente buscarCliente1(ArrayList<Cliente> listaClientes){
+    public Cliente buscarCliente(ArrayList<Cliente> listaClientes){
         Scanner teclado = new Scanner(System.in).useDelimiter("\n");
         long    identidad;
         Cliente cliente = new Cliente();
-        System.out.print(" ingrese el Numero de identidad: ");
-        identidad = teclado.nextLong();
-        for (Cliente clientes: listaClientes) {
-            if(identidad == clientes.getIdentidad()) {
-                cliente = clientes;
+        do {
+            System.out.print(" Ingrese el Numero de Identidad: ");
+            identidad = teclado.nextLong();
+            for (Cliente clientes: listaClientes) {
+                if(identidad == clientes.getIdentidad()) {
+                    cliente = clientes;
+                }
             }
-        }
+            if (!cliente.validarIdentidad(listaClientes, identidad))
+                System.out.println("Digite un codigo valido!");
+
+        }while (!cliente.validarIdentidad(listaClientes,identidad));
         return cliente;
     }
-
-
-
 
 }
