@@ -21,58 +21,58 @@ public class Empleado {
     public String getCodigo() {
         return codigo;
     }
-    public void setCodigo(String codigo) {
+    public void   setCodigo(String codigo) {
         this.codigo = codigo;
     }
     public String getNombre() {
         return nombre;
     }
-    public void setNombre(String nombre) {
+    public void   setNombre(String nombre) {
         this.nombre = nombre;
     }
     public String getFechaIngreso() {
         return fechaIngreso;
     }
-    public void setFechaIngreso(String fechaIngreso) {
+    public void   setFechaIngreso(String fechaIngreso) {
         this.fechaIngreso = fechaIngreso;
     }
     public String getPuesto() {
         return puesto;
     }
-    public void setPuesto(String puesto) {
+    public void   setPuesto(String puesto) {
         this.puesto = puesto;
     }
 
     public void agregarEmpleado(ArrayList<Empleado> listaEmpleados){
-        Scanner teclado = new Scanner(System.in).useDelimiter("\n");
+        Scanner  teclado  = new Scanner(System.in).useDelimiter("\n");
         Empleado empleado = new Empleado();
-        String codigo,nombre,fecha,puesto;
-        int contador;
+        String codigo;
         do {
-            System.out.print("Ingrese el codigo de empleado: ");
+            System.out.print("Ingrese el Codigo del Empleado: ");
             codigo = teclado.next();
-            contador = validarCodigo(listaEmpleados,codigo);
-        }while(contador>0);
+
+            if (validarCodigo(listaEmpleados,codigo))
+                System.out.println("Codigo de Empleado ya Existe!");
+
+        }while(validarCodigo(listaEmpleados,codigo));
         empleado.setCodigo(codigo);
-        System.out.print("Ingrese el nombre del empleado: ");
-        nombre = teclado.next();
-        empleado.setNombre(nombre);
-        System.out.print("Escriba la fecha de ingreso (dd/mm/yyyy): ");
-        fecha = teclado.next();
-        empleado.setFechaIngreso(fecha);
-        System.out.print("Ingrese el puesto del empleado: ");
-        puesto = teclado.next();
-        empleado.setPuesto(puesto);
+        System.out.print("Ingrese el Nombre del Empleado: ");
+        empleado.setNombre(teclado.next());
+        System.out.print("Escriba la Fecha de Ingreso (dd/mm/yyyy): ");
+        empleado.setFechaIngreso(teclado.next());
+        System.out.print("Ingrese el Puesto del Empleado: ");
+        empleado.setPuesto(teclado.next());
         listaEmpleados.add(empleado);
+        System.out.println("--Empleado Agregado--");
     }
-    public int validarCodigo(ArrayList<Empleado> listaEmpleados,String codigo){
-        int contador = 0;
+    public boolean validarCodigo(ArrayList<Empleado> listaEmpleados,String codigo){
+        boolean condicion = false;
         for (Empleado empleado: listaEmpleados) {
             if(codigo.equals(empleado.getCodigo())){
-                contador++;
+                condicion=true;
             }
         }
-        return contador;
+        return condicion;
     }
     public void visualizarEmpleados(ArrayList<Empleado> listaEmpleados){
         for (Empleado empleados: listaEmpleados) {
@@ -83,17 +83,23 @@ public class Empleado {
         }
     }
 
-    public Empleado buscarEmpleado1(ArrayList<Empleado> listaEmpleados){
+    public Empleado buscarEmpleado(ArrayList<Empleado> listaEmpleados) {
         Scanner teclado = new Scanner(System.in).useDelimiter("\n");
         Empleado empleado = new Empleado();
         String codigo;
-        System.out.print(" ingrese el codigo del empleado: ");
-        codigo = teclado.next();
-        for (Empleado empleados: listaEmpleados) {
-            if (codigo.equals(empleados.getCodigo())){
-               empleado = empleados;
+        do {
+            System.out.print(" Ingrese el codigo del empleado: ");
+            codigo = teclado.next();
+            for (Empleado empleados : listaEmpleados) {
+                if (codigo.equals(empleados.getCodigo())) {
+                    empleado = empleados;
+                }
             }
-        }
-        return empleado;
+            if (!empleado.validarCodigo(listaEmpleados, codigo))
+
+                System.out.println("Digite un codigo valido!");
+        }while (!empleado.validarCodigo(listaEmpleados, codigo)) ;
+            return empleado;
     }
 }
+

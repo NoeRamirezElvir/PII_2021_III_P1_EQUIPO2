@@ -19,69 +19,76 @@ public class Servicio {
         this.empleado    = pEmpleado;
     }
 
-    public String getCodigo() {
+    public String   getCodigo() {
         return codigo;
     }
-    public void setCodigo(String codigo) {
+    public void     setCodigo(String codigo) {
         this.codigo = codigo;
     }
-    public String getDescripcion() {
+    public String   getDescripcion() {
         return descripcion;
     }
-    public void setDescripcion(String descripcion) {
+    public void     setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-    public double getPrecio() {
+    public double   getPrecio() {
         return precio;
     }
-    public void setPrecio(double precio) {
+    public void     setPrecio(double precio) {
         this.precio = precio;
     }
     public Empleado getEmpleado() {
         return empleado;
     }
-    public void setEmpleado(Empleado empleado) {
+    public void     setEmpleado(Empleado empleado) {
         this.empleado = empleado;
     }
 
     public void agregarServicio(ArrayList<Servicio> listaServicios,ArrayList<Empleado> listaEmpleados){
-        Scanner teclado = new Scanner(System.in).useDelimiter("\n");
+        Scanner  teclado  = new Scanner(System.in).useDelimiter("\n");
         Servicio servicio = new Servicio();
         Empleado empleado = new Empleado();
-        String codigo,descripcion;
-        double precio;
-        int contador;
+        String   codigo;
+
         do {
-            System.out.print("Ingrese el codigo del servicio: ");
+            System.out.print("Ingrese el Codigo del Servicio: ");
             codigo = teclado.next();
-            contador = validarCodigo(listaServicios,codigo);
-        }while(contador>0);
+            if (validarCodigo(listaServicios,codigo))
+                System.out.println("Codigo de Servicio ya existe! ");
+
+        }while(validarCodigo(listaServicios,codigo));
         servicio.setCodigo(codigo);
-        System.out.print("Escriba una descripcion del servicio: ");
-        descripcion = teclado.next();
-        servicio.setDescripcion(descripcion);
-        System.out.print("Ingrese el precio del servicio: ");
-        precio = teclado.nextDouble();
-        servicio.setPrecio(precio);
-        System.out.println("\n");
+        System.out.print("Escriba una Descripcion del servicio: ");
+        servicio.setDescripcion(teclado.next());
+        System.out.print("Ingrese el Precio del Servicio: ");
+        servicio.setPrecio(teclado.nextDouble());
+        System.out.println("Empleados: ");
         empleado.visualizarEmpleados(listaEmpleados);
-        System.out.print("Ingrese el codigo del empleado: ");
-        codigo = teclado.next();
-        for (Empleado empleados: listaEmpleados) {
-            if (codigo.equals(empleados.getCodigo())){
-                servicio.setEmpleado(empleados);
+        //validar empleado
+        do {
+            System.out.print("Ingrese el Codigo del Empleado: ");
+            codigo = teclado.next();
+            for (Empleado item: listaEmpleados) {
+                if (codigo.equals(item.getCodigo())) {
+                    servicio.setEmpleado(item);
+                }
             }
-        }
+            if (!empleado.validarCodigo(listaEmpleados,codigo)) {
+                System.out.println("Digite un codigo valido!");
+            }
+        }while (!empleado.validarCodigo(listaEmpleados,codigo));
+
         listaServicios.add(servicio);
+        System.out.println("--Servicio Agregado--");
     }
-    public int validarCodigo(ArrayList<Servicio> listaServicios,String codigo){
-        int contador = 0;
+    public boolean validarCodigo(ArrayList<Servicio> listaServicios,String codigo){
+        boolean condicion = false;
         for (Servicio servicios: listaServicios){
             if(codigo.equals(servicios.getCodigo())){
-                contador++;
+                condicion = true;
             }
         }
-        return contador;
+        return condicion;
     }
     public void visualizarServicios(ArrayList<Servicio> listaServicios){
         for (Servicio servicios: listaServicios) {
